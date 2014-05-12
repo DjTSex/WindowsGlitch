@@ -16,17 +16,23 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
-public class WindowsGlitch {
+public class WindowsGlitch extends JFrame{
     //Variables
-    private static final int APPLICATION_WIDTH  = 800;      // Width, in pixels
-    private static final int APPLICATION_HEIGHT = 600;      // Height, in pixels
+    private static final int APPLICATION_WIDTH  = 800;                          // Width, in pixels FIXED FOR NOW
+    private static final int APPLICATION_HEIGHT = 600;                          // Height, in pixels FIXED FOR NOW
+    private JFrame application = new JFrame();
+    private JPanel defaultPanel = new JPanel();
+    private JButton uploadBackground = new JButton("Upload Background Image");
     
-    public static void main(String[] args) {
+    public WindowsGlitch() {
         
-        // Create a new application
-        JFrame application = new JFrame();
+        // Add to panel to jframe
+        defaultPanel.add(uploadBackground);
+        application.add(defaultPanel);
         
-        // Set default close operation for the application
+        //APPLICATION PROPERTIES
+        
+        //Exit on close
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // Set application size
@@ -40,6 +46,12 @@ public class WindowsGlitch {
         
         // Make application visible
         application.setVisible(true);
+       
+    }
+    
+    public static void main(String[] args) { 
+        
+        new WindowsGlitch();
         
     }
 }
