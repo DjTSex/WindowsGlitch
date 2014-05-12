@@ -8,27 +8,55 @@ package windowsglitch;
 
 //Import Statements
 
-import java.awt.*;
+import java.awt.event.*;
+import java.io.*; 
 import javax.swing.*;
-import javax.swing.JFrame;
-import java.util.List;
-import java.util.ArrayList; 
-import javax.swing.JLabel;
-import javax.swing.JButton;
 
-public class WindowsGlitch extends JFrame{
+public class WindowsGlitch extends JFrame implements ActionListener{
     //Variables
     private static final int APPLICATION_WIDTH  = 800;                          // Width, in pixels FIXED FOR NOW
     private static final int APPLICATION_HEIGHT = 600;                          // Height, in pixels FIXED FOR NOW
     private JFrame application = new JFrame();
     private JPanel defaultPanel = new JPanel();
     private JButton uploadBackground = new JButton("Upload Background Image");
+    private JFileChooser fc;
+    private JTextArea log;
+    static private String newline = "\n";
+    
+    
+     // Handle button events
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //Set up the file chooser.
+        if (fc == null) {
+            fc = new JFileChooser();
+        }
+        
+        if (e.getSource() == uploadBackground) {
+            // Open File Browser Dialog Box
+            int returnVal = fc.showOpenDialog(uploadBackground);
+            
+            // Handle Opening File
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                log.append("Attaching file: " + file.getName()
+                           + "." + newline);
+            } else {
+                log.append("Attachment cancelled by user." + newline);
+            }
+            log.setCaretPosition(log.getDocument().getLength());
+        }
+        
+    }
     
     public WindowsGlitch() {
         
         // Add to panel to jframe
         defaultPanel.add(uploadBackground);
         application.add(defaultPanel);
+        
+        // Add action listener for upload Background
+        uploadBackground.addActionListener(this);
         
         //APPLICATION PROPERTIES
         
@@ -42,10 +70,13 @@ public class WindowsGlitch extends JFrame{
         application.setResizable(false);
         
         // Set application title
-        application.setTitle("Trailing Windows Glitch Creator");
+        application.setTitle("Trailing Windows Glitch Simulator");
         
         // Make application visible
         application.setVisible(true);
+        
+
+        
        
     }
     
