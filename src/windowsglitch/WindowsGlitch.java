@@ -8,11 +8,14 @@ package windowsglitch;
 
 //Import Statements
 
+import java.awt.*;
 import java.awt.event.*;
-import java.io.*; 
-import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.*; 
 
-public class WindowsGlitch extends JFrame implements ActionListener{
+public class WindowsGlitch extends JPanel implements ActionListener{
     //Variables
     private static final int APPLICATION_WIDTH  = 800;                          // Width, in pixels FIXED FOR NOW
     private static final int APPLICATION_HEIGHT = 600;                          // Height, in pixels FIXED FOR NOW
@@ -22,6 +25,9 @@ public class WindowsGlitch extends JFrame implements ActionListener{
     private JFileChooser fc;
     private JTextArea log;
     static private String newline = "\n";
+    private String backgroundPath = "";
+    private boolean retrievedBackground = false;
+    private Image bgImage = null;
     
     
      // Handle button events
@@ -39,12 +45,29 @@ public class WindowsGlitch extends JFrame implements ActionListener{
             // Handle Opening File
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                log.append("Attaching file: " + file.getName()
-                           + "." + newline);
-            } else {
-                log.append("Attachment cancelled by user." + newline);
-            }
-            log.setCaretPosition(log.getDocument().getLength());
+                
+                //We want to get an image
+                
+                        
+                try {  
+                    bgImage = ImageIO.read(file);        
+                } catch (IOException f) {}
+                
+                validate();
+                repaint();
+                
+            } 
+        }
+        
+    }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        // Draw the background image if it's available
+        if (retrievedBackground) {
+            g.drawImage(bgImage, 0, 0, APPLICATION_WIDTH, APPLICATION_HEIGHT, this);
         }
         
     }
@@ -75,7 +98,8 @@ public class WindowsGlitch extends JFrame implements ActionListener{
         // Make application visible
         application.setVisible(true);
         
-
+        validate();
+        repaint();
         
        
     }
